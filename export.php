@@ -1,4 +1,7 @@
 <?php 
+//Downloaded from http://msimmons.ws/?p=142 which is based on
+//http://forums.untangle.com/ad-blocker/29204-convert-adblock-plus-txt-file-json-format-4.html
+
 $Content = "./easylist.txt";  
 $lines = file($Content);  
 $linesSplit = array_chunk( $lines, 2000 ); 
