@@ -2,16 +2,9 @@
 /* ********************************************* */
 /* Original script by WebFooL on Untangle Forums */
 /* Modifications by fsSnowboard                  */
+/*                                               */
+/* Use at your own risk                          */
 /* ********************************************* */
-
-//Downloaded from http://msimmons.ws/?p=142 which is based on
-//http://forums.untangle.com/ad-blocker/29204-convert-adblock-plus-txt-file-json-format-4.html
-
-//https://adblockplus.org/en/filters#options
-//https://adblockplus.org/en/filter-cheatsheet
-//http://jsonlint.com/
-
-//AdBlocker appears to only black ads based on a match of strings in the URL
 
 
 $remote_filter_list = "https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt";
