@@ -1,0 +1,32 @@
+Conversion script for Untangle Adblocker
+
+Converts AdBlock Plus filter list to JSON format to be imported into Untangle
+	* Downloads latest file
+	* Strips out first line
+	* Strips out lines with ! since they are comments
+	* Strips out lines with @@ since they are pass rules
+	* Remove everything to the right of $ since this is usually third-party or other
+	  helpers
+	* Remove empty lines
+	* Remove the following # " ' [ ] ^ \n \t \r ||
+	* Split the file into 2000 line chunks and dumps to a file
+
+After lots of trial and error, it appears the way that Untangle AdBlocker works is that it
+matches a filter rule to the URL of the web resource (page, css, js, image, etc.)  Only
+the wild card * works.  Items found in the AdBlock Plus filter list (^, ||, $third-party,
+etc.) don't work.
+
+The script will automatically download https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt
+and store in the directory.  I chose this file because Untangle AdBlocker can't use the
+element hide rules that AdBlock Plus uses.
+
+Original script was downloaded from http://msimmons.ws/?p=142 which was based on work by
+WebFooL http://forums.untangle.com/ad-blocker/29204-convert-adblock-plus-txt-file-json-format-2.html
+
+I found the AdBlock Plus information here https://adblockplus.org/en/filters#options and
+here https://adblockplus.org/en/filter-cheatsheet helpful.
+
+
+
+Use the script and import at your own risk.  Currently if I import the output of this
+script it blocks too much, but I haven't had time to investigate.
