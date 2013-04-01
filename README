@@ -1,7 +1,7 @@
 Conversion script for Untangle Adblocker
 
 Converts AdBlock Plus filter list to JSON format to be imported into Untangle
-	* Downloads latest file
+	* Downloads latest EasyList No Element Hide list
 	* Strips out first line
 	* Strips out lines with ! since they are comments
 	* Strips out lines with @@ since they are pass rules
