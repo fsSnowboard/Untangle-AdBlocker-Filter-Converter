@@ -7,15 +7,18 @@
 //Downloaded from http://msimmons.ws/?p=142 which is based on
 //http://forums.untangle.com/ad-blocker/29204-convert-adblock-plus-txt-file-json-format-4.html
 
-//https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt
 //https://adblockplus.org/en/filters#options
 //https://adblockplus.org/en/filter-cheatsheet
 //http://jsonlint.com/
-//setup auto download of new file and check file expireation before downloading another copy
+
 //AdBlocker appears to only black ads based on a match of strings in the URL
 
+
+$remote_filter_list = "https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt";
+$timezone_adjust = 60 * 60 * 7;  //Currently set to EST
+
 $Content = "./easylist_noelemhide.txt";
-$timezone_adjust = 60 * 60 * 7;
+
 $lines = file($Content);
 
 $last_modified =  preg_replace('/! Last modified: /', '', $lines[3]);
@@ -33,7 +36,7 @@ echo "New download on: ". date("d M Y H:i", $download_match_time) ." (".$downloa
 if($last_modified_time <= $date_match_time) {
 	echo "File is 5 days old, downloading new one.";
 	//if file is 5 days old, download new one
-	$new_easylist = file_get_contents("https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt");
+	$new_easylist = file_get_contents($remote_filter_list);
 	file_put_contents("easylist_noelemhide.txt", $new_easylist);
 	
 	//read new file
@@ -48,16 +51,8 @@ $badcharacters = array("#", '"', "'", "[", "]", "^", "\n", "\t", "\r", "||");
 
 unset($lines[0]);  //Line 0 is [Adblock Plus 2.0] and not needed
 
-//echo "test".strpos('007-gateway.com$third-party', '$')."\n";
-//foreach ($lines as $key => $value) {
-//    if($value{0} == "!") {
-//    	unset($lines[$key]);
-//    }
-//}
-//$lines = array_values($lines);  //repair index
-//print_r($lines);
 
-//
+
 foreach ($lines as $key => $value) {
 	//strip out lines begining with ! because they are comments
     if($value{0} == "!") {
@@ -88,9 +83,6 @@ foreach ($lines as $key => $value) {
 foreach ($lines as $key => $value) {
     $pos = strpos($value, '$');
     if ($pos !== FALSE) {
-	    //echo $key." ".$pos."\n";
-		//echo "part:". substr($value, 0, $pos)."\n";
-		//echo "full:".$value."\n";
 		$lines[$key] = substr($value, 0, $pos);
 	}
 }
@@ -102,28 +94,17 @@ foreach ($lines as $key => $value) {
     }
 }
 
-//$filtered = array();
-//foreach ($lines as $key => $value){
-//    if(in_array($value, $filtered)){
-//        continue;
-//    }
-//    array_push($filtered, $value);
-//}
-
-//print_r($filtered);
-
 //strip out bad characters
 foreach ($lines as $key => $value) {
 	$lines[$key] = str_replace($badcharacters, "", $value);
 }
 
-$lines = array_values(array_unique($lines));
-//$lines = array_unique($lines);  //eliminate duplicates
-//$lines = array_values($lines);  //repair index
-//print_r($lines);
+$lines = array_values(array_unique($lines));  //repair index
+
+echo "Filter Items: ". count($lines) ."<br />\n";
 
 $linesSplit = array_chunk( $lines, 2000 );
-print_r($linesSplit);
+//print_r($linesSplit);
 
 
 $i = 0; 
