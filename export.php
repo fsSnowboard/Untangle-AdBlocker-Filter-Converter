@@ -80,7 +80,8 @@ foreach ($lines as $key => $value) {
 	}
 }
 
-//remove line with @@ which are pass rules
+//remove line with |http or |https because they are blocking most things.
+//I can probably make a $badlines variable if I need to delete more lines
 foreach ($lines as $key => $value) {
     if($value == "|http:" || $value == "|https:") {
     	unset($lines[$key]);
