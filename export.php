@@ -80,6 +80,13 @@ foreach ($lines as $key => $value) {
 	}
 }
 
+//remove line with @@ which are pass rules
+foreach ($lines as $key => $value) {
+    if($value == "|http:" || $value == "|https:") {
+    	unset($lines[$key]);
+    }
+}
+
 //Remove empty lines
 foreach ($lines as $key => $value) {
     if($value == "") {
