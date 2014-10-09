@@ -6,6 +6,7 @@
 /* Use at your own risk                          */
 /* ********************************************* */
 
+date_default_timezone_set('UTC');
 
 $remote_filter_list = "https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt";
 $timezone_adjust = 60 * 60 * 7;  //Currently set to EST
