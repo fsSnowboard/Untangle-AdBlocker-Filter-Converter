@@ -111,20 +111,15 @@ $linesSplit = array_chunk( $lines, 2000 );
 //print_r($linesSplit);
 
 
-$i = 0; 
-foreach ($linesSplit as $inner_array) { 
-    $i++; 
-    $fp = fopen('ABimport'.$i.'.json', 'w');     
-    $filestart = "[";  
-    fwrite($fp, $filestart); 
-    while (list($key, $value) = each($inner_array)) 
-    {
-        //$cleanstr = str_replace($badcharacters, "", $value);     
-    	$store = '{"enabled":true,"string":"'.$value.'","javaClass":"com.untangle.uvm.node.GenericRule"},';
-		fwrite($fp, $store);
+$i = 1; 
+foreach ($linesSplit as $inner_array) {
+    $currentJson = 'ABimport'.$i.'.json';
+    $store = '[';
+    foreach ($inner_array as $value) {
+        $store .= '{"enabled":true,"string":"'.$value.'","javaClass":"com.untangle.uvm.node.GenericRule"},';
     }
-    $fileend = "]";  
-    fwrite($fp, $fileend); 
-    fclose($fp);
+    $store .= "]";
+    file_put_contents($currentJson, $store);
+    $i++;
 }
 ?>
