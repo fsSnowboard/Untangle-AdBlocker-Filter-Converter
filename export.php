@@ -47,19 +47,15 @@ $badcharacters = array("#", '"', "'", "[", "]", "^", "\n", "\t", "\r", "||");
 
 unset($lines[0]);  //Line 0 is [Adblock Plus 2.0] and not needed
 
-
-
 foreach ($lines as $key => $value) {
-	//strip out lines begining with ! because they are comments
-    if($value{0} == "!") {
-    	unset($lines[$key]);
-    }
-}
-
-//remove line with @@ which are pass rules
-foreach ($lines as $key => $value) {
-    if($value{0} == "@" && $value{1} == "@") {
-    	unset($lines[$key]);
+    // no keep lines start with ! and @@, and lines with |http and |https
+    if(!empty($value) && ($value[0] !== "!") && ($value[0] !== "@" && $value[1] !== "@") && $value !== "|http:" && $value !== "|https:") {
+        // strip everything to the right of $,
+        if (strpos($value, '$') !== false) {
+            $value = substr($value, 0, strpos($value, '$'));
+        }
+        //strip out bad characters
+        $cleanedList[] = str_replace($badcharacters, '', $value);
     }
 }
 
@@ -75,39 +71,9 @@ foreach ($lines as $key => $value) {
     //}
 //}
 
-//strip everything to the right of $
-foreach ($lines as $key => $value) {
-    $pos = strpos($value, '$');
-    if ($pos !== FALSE) {
-		$lines[$key] = substr($value, 0, $pos);
-	}
-}
+echo "Filter Items: ". count($cleanedList) ."<br />\n";
 
-//remove line with |http or |https because they are blocking most things.
-//I can probably make a $badlines variable if I need to delete more lines
-foreach ($lines as $key => $value) {
-    if($value == "|http:" || $value == "|https:") {
-    	unset($lines[$key]);
-    }
-}
-
-//Remove empty lines
-foreach ($lines as $key => $value) {
-    if($value == "") {
-    	unset($lines[$key]);
-    }
-}
-
-//strip out bad characters
-foreach ($lines as $key => $value) {
-	$lines[$key] = str_replace($badcharacters, "", $value);
-}
-
-$lines = array_values(array_unique($lines));  //repair index
-
-echo "Filter Items: ". count($lines) ."<br />\n";
-
-$linesSplit = array_chunk( $lines, 2000 );
+$linesSplit = array_chunk( $cleanedList, 2000 );
 //print_r($linesSplit);
 
 
