@@ -13,7 +13,9 @@ $timezone_adjust = 60 * 60 * 7;  //Currently set to EST
 
 $Content = "./easylist_noelemhide.txt";
 
-$lines = file($Content);
+if (file_exists($Content)) {
+    $lines = file($Content);
+}
 
 $last_modified =  preg_replace('/! Last modified: /', '', $lines[3]);
 $last_modified_time = strtotime($last_modified);
@@ -27,8 +29,8 @@ $download_date_match = date("d M Y H:i T", $date_match_time);
 
 echo "New download on: ". date("d M Y H:i", $download_match_time) ." (".$download_match_time.")</br>\n";
 
-if($last_modified_time <= $date_match_time) {
-	echo "File is 5 days old, downloading new one.";
+if($last_modified_time <= $date_match_time || !file_exists($Content)) {
+	echo "File is 5 days old or not exists, downloading latest.";
 	//if file is 5 days old, download new one
 	$new_easylist = file_get_contents($remote_filter_list);
 	file_put_contents("easylist_noelemhide.txt", $new_easylist);
